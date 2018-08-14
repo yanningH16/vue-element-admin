@@ -1,5 +1,6 @@
 <template>
   <div class="tags-view-container">
+    <!-- 头部的显示卡的东西 -->
     <scroll-pane class='tags-view-wrapper' ref='scrollPane'>
       <router-link ref='tag' class="tags-view-item" :class="isActive(tag)?'active':''" v-for="tag in Array.from(visitedViews)"
         :to="tag" :key="tag.path" @contextmenu.prevent.native="openMenu(tag,$event)">
@@ -7,7 +8,9 @@
         <span class='el-icon-close' @click.prevent.stop='closeSelectedTag(tag)'></span>
       </router-link>
     </scroll-pane>
+    <!-- 右键显示卡触发的东西 处理的比较细腻 -->
     <ul class='contextmenu' v-show="visible" :style="{left:left+'px',top:top+'px'}">
+      <!-- 国际化的东西  $t用于翻译中英文的  $t是vue-i18n全局函数，用于翻译lang (lang为@/lang)-->
       <li @click="closeSelectedTag(selectedTag)">{{$t('tagsView.close')}}</li>
       <li @click="closeOthersTags">{{$t('tagsView.closeOthers')}}</li>
       <li @click="closeAllTags">{{$t('tagsView.closeAll')}}</li>
@@ -101,6 +104,7 @@ export default {
       this.$store.dispatch('delAllViews')
       this.$router.push('/')
     },
+    // 右键任意一个选项卡触发
     openMenu(tag, e) {
       this.visible = true
       this.selectedTag = tag
